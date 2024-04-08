@@ -12,8 +12,6 @@ export default function LoginPage() {
   const [password, setPassword] = useState<string>('')
   const router = useRouter()
 
-  const x = require('../assets/svgs/gym.svg')
-
   return (
     <SafeAreaView style={{ alignItems: 'center', paddingHorizontal: Spacings['3x'] }}>
       <Spacer height={Spacings['9x']} />

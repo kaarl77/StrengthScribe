@@ -1,0 +1,16 @@
+const SPACING_CONSTANT = 8
+
+export enum Spacings {
+  '1x' = SPACING_CONSTANT,
+  '2x' = SPACING_CONSTANT * 2,
+  '3x' = SPACING_CONSTANT * 3,
+  '4x' = SPACING_CONSTANT * 4,
+  '5x' = SPACING_CONSTANT * 5,
+  '6x' = SPACING_CONSTANT * 6,
+  '7x' = SPACING_CONSTANT * 7,
+  '8x' = SPACING_CONSTANT * 8,
+  '9x' = SPACING_CONSTANT * 9,
+  '10x' = SPACING_CONSTANT * 10,
+  '0.5x' = SPACING_CONSTANT / 2,
+  '0.25x' = SPACING_CONSTANT / 4
+}

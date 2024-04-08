@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "StrengthScribe",
-    "slug": "StrengthScribe",
+    "slug": "strengthscribe",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,17 +15,28 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.strengthscribe"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.m_kaarl.strengthscribe"
     },
     "plugins": [
       "expo-router"
     ],
     "scheme": "strengthscribe",
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "31dbccc3-3f2b-4428-81c6-7d9f1ced56c0"
+      }
+    },
+    "owner": "m_kaarl"
   }
 }

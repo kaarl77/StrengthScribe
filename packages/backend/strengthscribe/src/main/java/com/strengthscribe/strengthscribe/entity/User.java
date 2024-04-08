@@ -1,4 +1,4 @@
-package entity;
+package com.strengthscribe.strengthscribe.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package dto;
+package com.strengthscribe.strengthscribe.dto;
 
 import lombok.Data;
 

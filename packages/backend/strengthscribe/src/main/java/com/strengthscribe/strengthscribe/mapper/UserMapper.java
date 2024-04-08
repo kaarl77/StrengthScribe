@@ -1,7 +1,7 @@
-package mapper;
+package com.strengthscribe.strengthscribe.mapper;
 
-import dto.UserDto;
-import entity.User;
+import com.strengthscribe.strengthscribe.dto.UserDto;
+import com.strengthscribe.strengthscribe.entity.User;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 

@@ -1,13 +1,14 @@
-package controller;
+package com.strengthscribe.strengthscribe.controller;
 
-import dto.UserDto;
-import form.UserForm;
+import com.strengthscribe.strengthscribe.dto.UserDto;
+import com.strengthscribe.strengthscribe.form.JWTTokenForm;
+import com.strengthscribe.strengthscribe.form.UserForm;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import service.UserService;
+import com.strengthscribe.strengthscribe.service.UserService;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class UserController {
         }
     }
 
+    @CrossOrigin
     @PostMapping(path = "/register", consumes = "application/json", produces = "application/json")
     public ResponseEntity<UserDto> register(@RequestBody UserForm userForm)
     {
@@ -50,10 +52,14 @@ public class UserController {
     }
 
     @GetMapping(path = "/isAuth", produces = "application/json")
-    public ResponseEntity<Object> isAuth(@RequestBody UserDto userDto)
+    public ResponseEntity<Object> isAuth(@RequestBody JWTTokenForm jwtTokenForm)
     {
-        UserDto currentUser = userService.validate(userDto.getToken());
-        return new ResponseEntity<>(currentUser, HttpStatus.ACCEPTED);
+        try {
+            UserDto currentUser = userService.validate(jwtTokenForm.getToken());
+            return new ResponseEntity<>(currentUser, HttpStatus.ACCEPTED);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     @GetMapping(path = "/api/users", produces = "application/json")

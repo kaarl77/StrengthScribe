@@ -1,21 +1,19 @@
-package service;
+package com.strengthscribe.strengthscribe.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.JWTVerifier;
-import dto.UserDto;
-import entity.User;
-import form.UserForm;
+import com.strengthscribe.strengthscribe.dto.UserDto;
+import com.strengthscribe.strengthscribe.entity.User;
+import com.strengthscribe.strengthscribe.form.UserForm;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import mapper.UserMapper;
+import com.strengthscribe.strengthscribe.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import repository.UserRepository;
+import com.strengthscribe.strengthscribe.repository.UserRepository;
 
 import java.util.*;
 
@@ -24,7 +22,6 @@ import java.util.*;
 public class UserService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     @Value("${security.jwt.token.secret-key:secret-key}")
     private String secretKey;
 
@@ -74,7 +71,7 @@ public class UserService {
         {
             User user = new User();
             user.setUsername(userForm.getUsername());
-            user.setPassword(passwordEncoder.encode(userForm.getPassword()));
+            user.setPassword(userForm.getPassword());
             User createdUser = userRepository.save(user);
 
             return userMapper.userToDto(createdUser);
@@ -90,7 +87,7 @@ public class UserService {
         }
         User user = userOptional.get();
 
-        if (passwordEncoder.matches(userForm.getPassword(), user.getPassword()))
+        if (userForm.getPassword().equals(user.getPassword()))
         {
             return userMapper.userToDto(user);
         }

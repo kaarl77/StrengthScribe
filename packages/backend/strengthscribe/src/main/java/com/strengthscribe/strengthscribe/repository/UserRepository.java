@@ -1,7 +1,7 @@
-package repository;
+package com.strengthscribe.strengthscribe.repository;
 
 
-import entity.User;
+import com.strengthscribe.strengthscribe.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

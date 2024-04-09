@@ -1,14 +1,29 @@
-import { Text, View, StyleSheet, ScrollView } from 'react-native'
-import { LineChart } from 'react-native-gifted-charts'
-import { Spacings } from '../../constants/Spacings'
+import {ScrollView, StyleSheet, Text, View} from 'react-native'
+import {LineChart} from 'react-native-gifted-charts'
+import {Spacings} from '../../constants/Spacings'
 import Spacer from '../../components/Spacer/Spacer'
-import { PrimaryTheme } from '../../constants/Themes'
-import { useEffect } from 'react'
-import { Typography } from '../../constants/Typography'
+import {PrimaryTheme} from '../../constants/Themes'
+import {Typography} from '../../constants/Typography'
 import Button from '../../components/Button/Button'
+import {getItem} from "../../services/async-storage";
+import {AsyncStorageKeys} from "../../constants/AsyncStorageKeys";
+import {useEffect, useState} from "react";
+
+type Workout = {
+  title: string;
+  data: { value: number }[];
+}
 
 export default function Index() {
-  const { username, latestWorkout } = fetchUserData()
+  const [username, setUsername] = useState('')
+  const [latestWorkout, setLatestWorkout] = useState<Workout>({ title: '', data: [] })
+
+  useEffect(() => {
+    fetchUserData().then((data) => {
+      setUsername(data.username)
+      setLatestWorkout(data.latestWorkout)
+    });
+  }, []);
 
   const primaryColor = PrimaryTheme.colors?.primary
 
@@ -45,14 +60,21 @@ export default function Index() {
   )
 }
 
-function fetchUserData() {
+async function fetchUserData() {
+  const username = await getUsername()
+
   return {
-    username: 'Kaarl',
+    username: username || 'User',
     latestWorkout: {
       title: "Push (Jeff's)",
       data: [{ value: 1 }, { value: 2 }, { value: 1 }, { value: 9 }, { value: 5 }]
     }
   }
+}
+
+async function getUsername() {
+  const username = await getItem(AsyncStorageKeys.USERNAME);
+  return username;
 }
 
 const styles = StyleSheet.create({

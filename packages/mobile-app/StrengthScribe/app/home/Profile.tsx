@@ -1,16 +1,19 @@
-import { View, Text } from 'react-native'
+import {Text, View, StyleSheet} from 'react-native'
 import Button from '../../components/Button/Button'
-import { useRouter } from 'expo-router'
+import {router} from 'expo-router'
+import {deleteItem} from "../../services/async-storage";
+import {AsyncStorageKeys} from "../../constants/AsyncStorageKeys";
+import {Spacings} from "../../constants/Spacings";
+import Spacer from "../../components/Spacer/Spacer";
 
 export default function Profile() {
-  const router = useRouter()
 
   return (
-    <View>
-      <Text>Profile</Text>
+    <View style={styles.container}>
+      <Spacer height={Spacings["3x"]}/>
       <Button
         onPress={() => {
-          router.replace('/')
+          handleLogout()
         }}
         title={'Log Out'}
         type={'danger'}
@@ -18,3 +21,15 @@ export default function Profile() {
     </View>
   )
 }
+
+function handleLogout(){
+  deleteItem(AsyncStorageKeys.USERNAME)
+  deleteItem(AsyncStorageKeys.AUTH_TOKEN)
+  router.replace('/')
+}
+
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal:Spacings["2x"]
+  }
+})

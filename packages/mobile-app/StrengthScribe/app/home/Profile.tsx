@@ -25,6 +25,7 @@ export default function Profile() {
 function handleLogout(){
   deleteItem(AsyncStorageKeys.USERNAME)
   deleteItem(AsyncStorageKeys.AUTH_TOKEN)
+  deleteItem(AsyncStorageKeys.USER_ID)
   router.replace('/')
 }
 

@@ -66,6 +66,7 @@ function handleRegister(username: string, password: string, confirmPassword: str
     }
     setItem(AsyncStorageKeys.USERNAME, username)
     setItem(AsyncStorageKeys.AUTH_TOKEN, response.data.token)
+    setItem(AsyncStorageKeys.USER_ID, response.data.id.toString())
 
     router.replace('/home')
   })

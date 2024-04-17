@@ -66,6 +66,7 @@ function handleLogin(username: string, password: string) {
     } else {
       setItem(AsyncStorageKeys.AUTH_TOKEN, response.data.token)
       setItem(AsyncStorageKeys.USERNAME, username)
+      setItem(AsyncStorageKeys.USER_ID, response.data.id.toString())
       router.replace('home')
     }
   });

@@ -1,5 +1,5 @@
-import { Tabs } from 'expo-router'
-import { Image } from 'expo-image'
+import {Tabs} from 'expo-router'
+import {Image} from 'expo-image'
 
 export default function Layout() {
   return (
@@ -13,7 +13,7 @@ export default function Layout() {
           tabBarIcon: (props) => (
             <Image
               source={require('../../assets/svgs/gym.svg')}
-              style={{ width: props.size, height: props.size }}
+              style={{width: props.size, height: props.size}}
               tintColor={props.color}
             />
           )
@@ -27,7 +27,7 @@ export default function Layout() {
           tabBarIcon: (props) => (
             <Image
               source={require('../../assets/svgs/heavy-weights.svg')}
-              style={{ width: props.size, height: props.size }}
+              style={{width: props.size, height: props.size}}
               tintColor={props.color}
             />
           )
@@ -41,7 +41,7 @@ export default function Layout() {
           tabBarIcon: (props) => (
             <Image
               source={require('../../assets/svgs/workout-list.svg')}
-              style={{ width: props.size, height: props.size }}
+              style={{width: props.size, height: props.size}}
               tintColor={props.color}
             />
           )
@@ -55,7 +55,7 @@ export default function Layout() {
           tabBarIcon: (props) => (
             <Image
               source={require('../../assets/svgs/arrow-up-chart.svg')}
-              style={{ width: props.size, height: props.size }}
+              style={{width: props.size, height: props.size}}
               tintColor={props.color}
             />
           )
@@ -69,12 +69,14 @@ export default function Layout() {
           tabBarIcon: (props) => (
             <Image
               source={require('../../assets/svgs/account.svg')}
-              style={{ width: props.size, height: props.size }}
+              style={{width: props.size, height: props.size}}
               tintColor={props.color}
             />
           )
         }}
       />
+
+
     </Tabs>
   )
 }

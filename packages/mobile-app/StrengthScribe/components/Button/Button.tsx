@@ -1,8 +1,8 @@
-import { Button as PaperButton } from 'react-native-paper'
-import { StyleProp, Text, ViewStyle } from 'react-native'
-import { ThemeProp } from 'react-native-paper/lib/typescript/types'
-import { IconSource } from 'react-native-paper/lib/typescript/components/Icon'
-import { Image } from 'expo-image'
+import {Button as PaperButton} from 'react-native-paper'
+import {FlexAlignType, StyleProp, Text, View, ViewStyle} from 'react-native'
+import {ThemeProp} from 'react-native-paper/lib/typescript/types'
+import {IconSource} from 'react-native-paper/lib/typescript/components/Icon'
+import {Image} from 'expo-image'
 
 export type ButtonType = 'primary' | 'secondary' | 'tertiary' | 'danger'
 
@@ -10,21 +10,34 @@ interface ButtonProps {
   onPress: () => void
   title: string
   type?: ButtonType
-  textAlign?: 'center' | 'left'
+  textAlign?: "center" | "left"
   iconSource?: number
 }
+
 export default function Button(props: ButtonProps) {
-  const { onPress, title, type = 'primary', textAlign, iconSource } = props
+  const {onPress, title, type = 'primary', textAlign = "center", iconSource} = props
 
   const customContainerStyle: ViewStyle = {
     borderRadius: 8,
-    width: '100%'
+    width: '100%',
+  }
+
+  const customContentStyle: ViewStyle = {
+    flexDirection: "row-reverse",
+    justifyContent: textAlign === "center" ? "center" : "space-between",
   }
 
   return (
-    <PaperButton mode={'contained'} onPress={onPress} style={customContainerStyle} theme={getTheme(type)}>
-      <Text style={{ fontWeight: 'bold' }}>{title}</Text>
-      {iconSource && <Image source={iconSource} style={{ width: 16, height: 16 }} />}
+    <PaperButton
+      contentStyle={customContentStyle}
+      mode={'contained'}
+      onPress={onPress}
+      style={customContainerStyle}
+      theme={getTheme(type)}
+      icon={(props) => {
+        return <Image source={iconSource} style={{width: props.size, height: props.size}} tintColor={props.color}/>
+      }}>
+      <Text style={{fontWeight: 'bold'}}>{title}</Text>
     </PaperButton>
   )
 }

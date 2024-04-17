@@ -1,9 +1,102 @@
-import { View, Text } from 'react-native'
+import {View, Text, StyleSheet} from 'react-native'
+import Spacer from "../../components/Spacer/Spacer";
+import {Spacings} from "../../constants/Spacings";
+import {Typography} from "../../constants/Typography";
+import {useEffect, useState} from "react";
+import {getItem} from "../../services/async-storage";
+import {AsyncStorageKeys} from "../../constants/AsyncStorageKeys";
+import {getExercises} from "../../services/store";
+import {Searchbar} from "react-native-paper";
+import {ExerciseDTO, ExercisesDTO} from "../../services/store.types";
+import Button from "../../components/Button/Button";
+import {useRouter} from "expo-router";
 
 export default function Exercises() {
+
+  const asyncUserId = getUserId()
+
+  const [exercises, setExercises] = useState<ExercisesDTO>()
+  const [searchBarQuery, setSearchBarQuery] = useState<string>("")
+  const [selectedExercise, setSelectedExercise] = useState<ExerciseDTO>()
+  const router = useRouter()
+
+  const arrowRightSvg = require('../../assets/svgs/arrow-right.svg')
+
+  useEffect(() => {
+    asyncUserId.then((id) => {
+      fetchExercises(id).then((response) => {
+        setExercises(response?.data)
+      })
+    })
+  }, []);
+
+  useEffect(() => {
+    console.log(selectedExercise)
+  }, [selectedExercise]);
+
   return (
-    <View>
-      <Text>Exercises</Text>
+    <View style={styles.container}>
+      <Spacer height={Spacings['3x']}/>
+      <Text style={{...Typography['6x'], fontWeight: 'bold'}}>Exercises</Text>
+
+      <Spacer height={Spacings['1x']}/>
+      <Searchbar value={searchBarQuery} onChangeText={setSearchBarQuery} placeholder={'Search exercises...'}/>
+      <Spacer height={Spacings['3x']}/>
+
+      {searchBarQuery.length > 0 && exercises && filterExercises(exercises, searchBarQuery).map((exercise, index) => {
+          if (exercise.name === "No exercises found") {
+            return (
+              <View style={{alignItems:"center"}} key={index}>
+                <Text>No exercises found</Text>
+                <Spacer height={Spacings['0.5x']}/>
+                <Button onPress={() => {
+                  console.log("New exercise")
+                  router.navigate('./NewExercise')
+                }} title={"Create a new exercise"}/>
+              </View>
+            )
+          }
+
+          return (
+            <Button
+              onPress={() => {
+                setSelectedExercise(exercise)
+                setSearchBarQuery("")
+              }}
+              title={exercise.name ?? ""}
+              key={index} type={"tertiary"}
+              iconSource={arrowRightSvg}
+              textAlign={'left'}/>
+          )
+        }
+      )}
+
     </View>
   )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: Spacings['2x'],
+  }
+})
+
+async function fetchExercises(userId: string | null) {
+  if (!userId) {
+    return
+  }
+
+  return getExercises(userId)
+}
+
+async function getUserId() {
+  const username = await getItem(AsyncStorageKeys.USER_ID);
+  return username
+}
+
+function filterExercises(exercises: ExercisesDTO, query: string) {
+  if (query.length < 3) {
+    return []
+  }
+  return exercises.filter(exercise => exercise.name?.toLowerCase().includes(query.toLowerCase())).length ? exercises.filter(exercise => exercise.name?.toLowerCase().includes(query.toLowerCase())) : [{name: "No exercises found"}]
 }

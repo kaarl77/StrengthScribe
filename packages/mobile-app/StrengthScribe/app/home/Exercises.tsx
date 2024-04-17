@@ -9,12 +9,13 @@ import {getExercises} from "../../services/store";
 import {Searchbar} from "react-native-paper";
 import {ExerciseDTO, ExercisesDTO} from "../../services/store.types";
 import Button from "../../components/Button/Button";
-import {useRouter} from "expo-router";
+import {useRouter, useLocalSearchParams, useFocusEffect} from "expo-router";
 
 export default function Exercises() {
 
   const asyncUserId = getUserId()
 
+  const [userId, setUserId] = useState<string>()
   const [exercises, setExercises] = useState<ExercisesDTO>()
   const [searchBarQuery, setSearchBarQuery] = useState<string>("")
   const [selectedExercise, setSelectedExercise] = useState<ExerciseDTO>()
@@ -22,13 +23,16 @@ export default function Exercises() {
 
   const arrowRightSvg = require('../../assets/svgs/arrow-right.svg')
 
-  useEffect(() => {
+  useFocusEffect(() => {
     asyncUserId.then((id) => {
       fetchExercises(id).then((response) => {
         setExercises(response?.data)
+        if(id) {
+          setUserId(id)
+        }
       })
     })
-  }, []);
+  });
 
   useEffect(() => {
     console.log(selectedExercise)
@@ -42,16 +46,24 @@ export default function Exercises() {
       <Spacer height={Spacings['1x']}/>
       <Searchbar value={searchBarQuery} onChangeText={setSearchBarQuery} placeholder={'Search exercises...'}/>
       <Spacer height={Spacings['3x']}/>
+      {searchBarQuery.length < 3 && (
+        <View style={{alignItems: "center"}}>
+          <Text style={{...Typography["2x"]}}>Search for exercises by name</Text>
+        </View>
+      )}
 
       {searchBarQuery.length > 0 && exercises && filterExercises(exercises, searchBarQuery).map((exercise, index) => {
           if (exercise.name === "No exercises found") {
             return (
-              <View style={{alignItems:"center"}} key={index}>
+              <View style={{alignItems: "center"}} key={index}>
                 <Text>No exercises found</Text>
                 <Spacer height={Spacings['0.5x']}/>
                 <Button onPress={() => {
                   console.log("New exercise")
-                  router.navigate('./NewExercise')
+                  router.navigate({
+                    pathname: '../NewExercise',
+                    params: {proposedExerciseName: searchBarQuery, userId: userId}
+                  })
                 }} title={"Create a new exercise"}/>
               </View>
             )

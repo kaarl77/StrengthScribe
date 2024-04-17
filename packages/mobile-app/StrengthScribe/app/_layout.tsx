@@ -10,6 +10,7 @@ export default function Layout() {
         <Stack.Screen name='LoginPage' options={{ headerShown: false }} />
         <Stack.Screen name='Register' options={{ headerShown: true, headerBackTitle: 'Login' }} />
         <Stack.Screen name='home' options={{ headerShown: false }} />
+        <Stack.Screen name={'NewExercise'} options={{presentation:'modal', headerTitle: "Create a new exercise"}}/>
       </Stack>
     </PaperProvider>
   )

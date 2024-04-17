@@ -50,3 +50,19 @@ export const getExercises = async (userId: string): Promise<ResponseType<Exercis
     };
   }
 }
+
+export const createExercise = async (userId: string, name: string): Promise<ResponseType<ExerciseDTO>> => {
+  try {
+    const response = await axios.post(`${baseUrl}/api/exercises`, {userId, name});
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  } catch (error: any) {
+    return {
+      data: {},
+      status: error.response ? error.response.status : 500,
+      error: error.message,
+    };
+  }
+}

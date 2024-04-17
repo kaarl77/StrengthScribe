@@ -75,14 +75,7 @@ export default function Layout() {
           )
         }}
       />
-      <Tabs.Screen
-        name={'NewExercise'}
-        options={{
-          href: null,
-          headerTitle: 'New Exercise',
-          headerTitleAlign: 'left',
-        }}
-      />
+
 
     </Tabs>
   )

@@ -12,14 +12,14 @@
       },
       "android": {
         "image": "latest"
-      },
-      "preview": {
-        "distribution": "internal"
-      },
-      "production": {}
+      }
     },
-    "submit": {
-      "production": {}
-    }
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {}
+  },
+  "submit": {
+    "production": {}
   }
 }

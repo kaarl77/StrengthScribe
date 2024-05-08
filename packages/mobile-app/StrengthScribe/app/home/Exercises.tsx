@@ -9,10 +9,9 @@ import {getExercises} from "../../services/store";
 import {Searchbar} from "react-native-paper";
 import {ExerciseDTO, ExercisesDTO} from "../../services/store.types";
 import Button from "../../components/Button/Button";
-import {useRouter, useLocalSearchParams, useFocusEffect} from "expo-router";
+import {useRouter, useFocusEffect} from "expo-router";
 
 export default function Exercises() {
-
   const asyncUserId = getUserId()
 
   const [userId, setUserId] = useState<string>()
@@ -23,16 +22,22 @@ export default function Exercises() {
 
   const arrowRightSvg = require('../../assets/svgs/arrow-right.svg')
 
-  useFocusEffect(() => {
+  asyncUserId.then((id) => {
+    if (id) {
+      setUserId(id)
+    }
+  })
+
+  useEffect(() => {
     asyncUserId.then((id) => {
       fetchExercises(id).then((response) => {
         setExercises(response?.data)
-        if(id) {
+        if (id) {
           setUserId(id)
         }
       })
     })
-  });
+  }, [userId]);
 
   useEffect(() => {
     console.log(selectedExercise)
@@ -98,6 +103,8 @@ async function fetchExercises(userId: string | null) {
     return
   }
 
+  // console.log("infinite?")
+
   return getExercises(userId)
 }
 
@@ -110,5 +117,7 @@ function filterExercises(exercises: ExercisesDTO, query: string) {
   if (query.length < 3) {
     return []
   }
-  return exercises.filter(exercise => exercise.name?.toLowerCase().includes(query.toLowerCase())).length ? exercises.filter(exercise => exercise.name?.toLowerCase().includes(query.toLowerCase())) : [{name: "No exercises found"}]
+  return exercises.filter(exercise => exercise.name?.toLowerCase().includes(query.toLowerCase())).length ?
+    exercises.filter(exercise => exercise.name?.toLowerCase().includes(query.toLowerCase())) :
+    [{name: "No exercises found"}]
 }

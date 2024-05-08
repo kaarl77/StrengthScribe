@@ -17,4 +17,8 @@ public class Exercise {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "workout_id")
+    private Workout workout;
 }

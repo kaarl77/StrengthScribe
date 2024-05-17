@@ -11,3 +11,12 @@ export type ExerciseDTO = {
 }
 
 export type ExercisesDTO = ExerciseDTO[]
+
+export type WorkoutDTO = {
+  id?: string,
+  name?: string,
+  userId?: string,
+  exercises?: ExerciseDTO[],
+}
+
+export type WorkoutsDTO = WorkoutDTO[]

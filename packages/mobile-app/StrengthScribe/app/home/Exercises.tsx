@@ -23,7 +23,15 @@ export default function Exercises() {
 
   const arrowRightSvg = require('../../assets/svgs/arrow-right.svg')
 
-  useFocusEffect(() => {
+  useEffect(() => {
+    asyncUserId.then((id) => {
+      if(id) {
+        setUserId(id)
+      }}
+    )
+  }, []);
+
+  useEffect(() => {
     asyncUserId.then((id) => {
       fetchExercises(id).then((response) => {
         setExercises(response?.data)
@@ -32,7 +40,7 @@ export default function Exercises() {
         }
       })
     })
-  });
+  }, [userId]);
 
   useEffect(() => {
     console.log(selectedExercise)

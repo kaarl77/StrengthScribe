@@ -30,6 +30,16 @@ public class WorkoutController {
         }
     }
 
+    @GetMapping(path = "/{id}", produces = "application/json")
+    public ResponseEntity<WorkoutDto> getWorkoutById(@PathVariable Long id) {
+        try {
+            Workout workout = workoutService.getWorkoutById(id);
+            return new ResponseEntity<>(workoutMapper.entityToDto(workout), HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PostMapping(path = "", consumes = "application/json", produces = "application/json")
     public ResponseEntity<WorkoutDto> create(@RequestBody WorkoutForm workoutForm) {
         try {

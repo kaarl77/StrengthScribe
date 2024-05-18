@@ -114,7 +114,7 @@ async function getUserId() {
   return username
 }
 
-function filterExercises(exercises: ExercisesDTO, query: string) {
+export function filterExercises(exercises: ExercisesDTO, query: string) {
   if (query.length < 3) {
     return []
   }

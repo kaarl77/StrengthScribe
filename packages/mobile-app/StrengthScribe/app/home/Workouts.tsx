@@ -7,7 +7,7 @@ import {useEffect, useState} from "react";
 import {getItem} from "../../services/async-storage";
 import {AsyncStorageKeys} from "../../constants/AsyncStorageKeys";
 import {Searchbar} from "react-native-paper";
-import {ExercisesDTO, WorkoutDTO, WorkoutsDTO} from "../../services/store.types";
+import {WorkoutDTO, WorkoutsDTO} from "../../services/store.types";
 import Button from "../../components/Button/Button";
 import {useRouter} from "expo-router";
 
@@ -80,7 +80,7 @@ export default function Workouts() {
                 setSearchBarQuery("")
                 router.navigate({
                   pathname: '../EditWorkout',
-                  params: {workout: workout}
+                  params: {workoutId: workout.id}
 
                 })
               }}

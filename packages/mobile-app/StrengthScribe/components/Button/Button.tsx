@@ -12,10 +12,11 @@ interface ButtonProps {
   type?: ButtonType
   textAlign?: "center" | "left"
   iconSource?: number
+  iconColor?: string
 }
 
 export default function Button(props: ButtonProps) {
-  const {onPress, title, type = 'primary', textAlign = "center", iconSource} = props
+  const {onPress, title, type = 'primary', textAlign = "center", iconSource, iconColor} = props
 
   const customContainerStyle: ViewStyle = {
     borderRadius: 8,
@@ -35,7 +36,7 @@ export default function Button(props: ButtonProps) {
       style={customContainerStyle}
       theme={getTheme(type)}
       icon={(props) => {
-        return <Image source={iconSource} style={{width: props.size, height: props.size}} tintColor={props.color}/>
+        return <Image source={iconSource} style={{width: props.size, height: props.size}} tintColor={iconColor}/>
       }}>
       <Text style={{fontWeight: 'bold'}}>{title}</Text>
     </PaperButton>

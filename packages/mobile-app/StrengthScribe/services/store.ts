@@ -98,3 +98,19 @@ export const createWorkout = async (userId: string, name: string): Promise<Respo
     };
   }
 }
+
+export const addExerciseToWorkout = async (workoutId: string, exerciseId: string): Promise<ResponseType<WorkoutDTO>> => {
+  try {
+    const response = await axios.put(`${baseUrl}/api/workouts/${workoutId}/exercise/${exerciseId}`);
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  } catch (error: any) {
+    return {
+      data: {},
+      status: error.response ? error.response.status : 500,
+      error: error.message,
+    };
+  }
+}

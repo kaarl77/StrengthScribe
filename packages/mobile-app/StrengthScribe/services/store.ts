@@ -115,6 +115,22 @@ export const addExerciseToWorkout = async (workoutId: string, exerciseId: string
   }
 }
 
+export const deleteExerciseFromWorkout = async (workoutId: string, exerciseId: string): Promise<ResponseType<WorkoutDTO>> => {
+  try {
+    const response = await axios.delete(`${baseUrl}/api/workouts/${workoutId}/exercise/${exerciseId}`);
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  } catch (error: any) {
+    return {
+      data: {},
+      status: error.response ? error.response.status : 500,
+      error: error.message,
+    };
+  }
+}
+
 export const getWorkout = async (workoutId: string): Promise<ResponseType<WorkoutDTO>> => {
   try {
     const response = await axios.get(`${baseUrl}/api/workouts/${workoutId}`);

@@ -1,11 +1,11 @@
 import {ScrollView, Text, View} from "react-native";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {Spacings} from "../constants/Spacings";
 import Spacer from "../components/Spacer/Spacer";
 import {Typography} from "../constants/Typography";
 import {useLocalSearchParams, useRouter} from "expo-router";
 import {WorkoutDTO} from "../services/store.types";
-import {getWorkout} from "../services/store";
+import {deleteExerciseFromWorkout, getWorkout} from "../services/store";
 import Button from "../components/Button/Button";
 
 export default function EditWorkout() {
@@ -15,7 +15,7 @@ export default function EditWorkout() {
   const trashSvg = require('../assets/svgs/trash.svg')
 
   const [workout, setWorkout] = useState<WorkoutDTO>()
-  const [shouldRefresh, setShouldRefresh] = useState<boolean>(false)
+  const [shouldRefresh, setShouldRefresh] = useState(false)
 
   const router = useRouter()
 
@@ -23,18 +23,7 @@ export default function EditWorkout() {
     getWorkout(workoutId).then((response) => {
       setWorkout(response.data)
     })
-  }, [workoutId, shouldRefresh]);
-
-  useEffect(() => {
-    console.log(workout)
-  }, [workout]);
-
-  useEffect(() => {
-    if(false){
-      console.log('should refresh')
-      setShouldRefresh((prevState)=>!prevState)
-    }
-  }, [params]);
+  }, [workoutId, params, shouldRefresh]);
 
   return (
     <ScrollView style={{paddingHorizontal: Spacings["2x"]}}>
@@ -48,7 +37,9 @@ export default function EditWorkout() {
           <React.Fragment key={index}>
             <Button
               onPress={() => {
-                console.log('delete exercise')
+                deleteExerciseFromWorkout(workoutId, exercise.id ?? '').then(() => {
+                  setShouldRefresh((prevState)=>!prevState)
+                })
               }}
               title={exercise.name ?? ''}
               type={"tertiary"}

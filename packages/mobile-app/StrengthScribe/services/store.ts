@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {ExerciseDTO, ResponseType, WorkoutDTO, WorkoutsDTO} from "./store.types";
+import {ExerciseDTO, RecentStatsDTO, ResponseType, WorkoutDTO, WorkoutsDTO} from "./store.types";
 
 const baseUrl = 'http://localhost:8080';
 
@@ -118,6 +118,22 @@ export const addExerciseToWorkout = async (workoutId: string, exerciseId: string
 export const getWorkout = async (workoutId: string): Promise<ResponseType<WorkoutDTO>> => {
   try {
     const response = await axios.get(`${baseUrl}/api/workouts/${workoutId}`);
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  } catch (error: any) {
+    return {
+      data: {},
+      status: error.response ? error.response.status : 500,
+      error: error.message,
+    };
+  }
+}
+
+export const getRecentStatsOfExercise = async (exerciseId: string): Promise<ResponseType<RecentStatsDTO>> => {
+  try {
+    const response = await axios.get(`${baseUrl}/api/records/recentStats/exercise/${exerciseId}`);
     return {
       data: response.data,
       status: response.status,

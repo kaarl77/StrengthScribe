@@ -20,3 +20,11 @@ export type WorkoutDTO = {
 }
 
 export type WorkoutsDTO = WorkoutDTO[]
+
+export type RecentStatsDTO = {
+  numberOfSets?: number,
+  avgReps?: number,
+  maxReps?: number,
+  avgWeight?: number,
+  maxWeight?: number,
+}

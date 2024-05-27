@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {ExerciseDTO, RecentStatsDTO, ResponseType, WorkoutDTO, WorkoutsDTO} from "./store.types";
+import {WorkoutRecord} from "../app/StartWorkout/LogWorkout";
 
 const baseUrl = 'http://localhost:8080';
 
@@ -157,6 +158,22 @@ export const getRecentStatsOfExercise = async (exerciseId: string): Promise<Resp
   } catch (error: any) {
     return {
       data: {},
+      status: error.response ? error.response.status : 500,
+      error: error.message,
+    };
+  }
+}
+
+export const postRecords = async (records: WorkoutRecord[]): Promise<ResponseType<WorkoutRecord[]>> => {
+  try {
+    const response = await axios.post(`${baseUrl}/api/records`, records);
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  } catch (error: any) {
+    return {
+      data: [],
       status: error.response ? error.response.status : 500,
       error: error.message,
     };

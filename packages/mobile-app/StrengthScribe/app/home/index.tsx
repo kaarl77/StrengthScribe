@@ -8,6 +8,7 @@ import Button from '../../components/Button/Button'
 import {getItem} from "../../services/async-storage";
 import {AsyncStorageKeys} from "../../constants/AsyncStorageKeys";
 import {useEffect, useState} from "react";
+import {useRouter} from "expo-router";
 
 type Workout = {
   title: string;
@@ -17,6 +18,7 @@ type Workout = {
 export default function Index() {
   const [username, setUsername] = useState('')
   const [latestWorkout, setLatestWorkout] = useState<Workout>({ title: '', data: [] })
+  const router = useRouter()
 
   useEffect(() => {
     fetchUserData().then((data) => {
@@ -43,6 +45,7 @@ export default function Index() {
       <Button
         onPress={() => {
           console.log('Go to new workout flow')
+          router.navigate('../StartWorkout')
         }}
         title={'Start a workout'}
       />

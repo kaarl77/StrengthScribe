@@ -17,6 +17,7 @@ export default function Layout() {
           presentation: 'modal',
           headerTitle: "Add an exercise",
         }}/>
+        <Stack.Screen name={'StartWorkout'} options={{headerShown:false}}/>
       </Stack>
     </PaperProvider>
   )

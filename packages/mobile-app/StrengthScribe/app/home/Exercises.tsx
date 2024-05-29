@@ -5,11 +5,12 @@ import {Typography} from "../../constants/Typography";
 import {useEffect, useState} from "react";
 import {getItem} from "../../services/async-storage";
 import {AsyncStorageKeys} from "../../constants/AsyncStorageKeys";
-import {getExercises} from "../../services/store";
+import {getExercises, getRecentStatsOfExercise} from "../../services/store";
 import {Searchbar} from "react-native-paper";
-import {ExerciseDTO, ExercisesDTO} from "../../services/store.types";
+import {ExerciseDTO, ExercisesDTO, RecentStatsDTO} from "../../services/store.types";
 import Button from "../../components/Button/Button";
 import {useRouter, useLocalSearchParams, useFocusEffect} from "expo-router";
+import TextInput from "../../components/TextInput/TextInput";
 
 export default function Exercises() {
 
@@ -19,11 +20,20 @@ export default function Exercises() {
   const [exercises, setExercises] = useState<ExercisesDTO>()
   const [searchBarQuery, setSearchBarQuery] = useState<string>("")
   const [selectedExercise, setSelectedExercise] = useState<ExerciseDTO>()
+  const [recentStats, setRecentStats] = useState<RecentStatsDTO>()
   const router = useRouter()
 
   const arrowRightSvg = require('../../assets/svgs/arrow-right.svg')
 
-  useFocusEffect(() => {
+  useEffect(() => {
+    asyncUserId.then((id) => {
+      if(id) {
+        setUserId(id)
+      }}
+    )
+  }, []);
+
+  useEffect(() => {
     asyncUserId.then((id) => {
       fetchExercises(id).then((response) => {
         setExercises(response?.data)
@@ -32,10 +42,14 @@ export default function Exercises() {
         }
       })
     })
-  });
+  }, [userId]);
 
   useEffect(() => {
-    console.log(selectedExercise)
+    if(selectedExercise) {
+      getRecentStatsOfExercise(selectedExercise.id ?? '').then((response) => {
+        setRecentStats(response?.data)
+      })
+    }
   }, [selectedExercise]);
 
   return (
@@ -44,7 +58,7 @@ export default function Exercises() {
       <Text style={{...Typography['6x'], fontWeight: 'bold'}}>Exercises</Text>
 
       <Spacer height={Spacings['1x']}/>
-      <Searchbar value={searchBarQuery} onChangeText={setSearchBarQuery} placeholder={'Search exercises...'}/>
+      <TextInput value={searchBarQuery} onChangeText={setSearchBarQuery} label={'Search exercises...'}/>
       <Spacer height={Spacings['3x']}/>
       {searchBarQuery.length < 3 && (
         <View style={{alignItems: "center"}}>
@@ -83,6 +97,13 @@ export default function Exercises() {
         }
       )}
 
+      {recentStats && selectedExercise?.name && (
+        <View>
+          <Spacer height={Spacings['3x']}/>
+          <RecentExerciseStats exerciseName={selectedExercise?.name} stats={recentStats}/>
+        </View>
+      )}
+
     </View>
   )
 }
@@ -106,9 +127,25 @@ async function getUserId() {
   return username
 }
 
-function filterExercises(exercises: ExercisesDTO, query: string) {
+export function filterExercises(exercises: ExercisesDTO, query: string) {
   if (query.length < 3) {
     return []
   }
   return exercises.filter(exercise => exercise.name?.toLowerCase().includes(query.toLowerCase())).length ? exercises.filter(exercise => exercise.name?.toLowerCase().includes(query.toLowerCase())) : [{name: "No exercises found"}]
+}
+
+const RecentExerciseStats = (props :{exerciseName: string, stats: RecentStatsDTO}) => {
+  const {stats, exerciseName} = props
+
+  return (
+    <View>
+      <Text style={{...Typography["4x"], fontWeight:'bold'}}>{exerciseName}</Text>
+      <Spacer height={Spacings['1x']}/>
+
+      <Text style={{...Typography["3x"]}}>Sets: {stats.numberOfSets}</Text>
+      <Text style={{...Typography["3x"]}}>Reps: {stats.maxReps}</Text>
+      <Text style={{...Typography["3x"]}}>Weight: {stats.maxWeight}</Text>
+      <Text style={{...Typography["3x"]}}>Volume: {(stats.maxWeight ?? 0) * (stats.maxReps ?? 0) * (stats.numberOfSets ?? 0)}</Text>
+    </View>
+  )
 }

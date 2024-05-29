@@ -1,5 +1,5 @@
 import {Button as PaperButton} from 'react-native-paper'
-import {FlexAlignType, StyleProp, Text, View, ViewStyle} from 'react-native'
+import {DimensionValue, FlexAlignType, StyleProp, Text, View, ViewStyle} from 'react-native'
 import {ThemeProp} from 'react-native-paper/lib/typescript/types'
 import {IconSource} from 'react-native-paper/lib/typescript/components/Icon'
 import {Image} from 'expo-image'
@@ -12,14 +12,17 @@ interface ButtonProps {
   type?: ButtonType
   textAlign?: "center" | "left"
   iconSource?: number
+  iconColor?: string
+  customWidth?: DimensionValue
+  disabled?: boolean
 }
 
 export default function Button(props: ButtonProps) {
-  const {onPress, title, type = 'primary', textAlign = "center", iconSource} = props
+  const {onPress, title, type = 'primary', textAlign = "center", iconSource, iconColor, disabled, customWidth} = props
 
   const customContainerStyle: ViewStyle = {
     borderRadius: 8,
-    width: '100%',
+    width: customWidth ?? '100%',
   }
 
   const customContentStyle: ViewStyle = {
@@ -29,14 +32,15 @@ export default function Button(props: ButtonProps) {
 
   return (
     <PaperButton
+      disabled={disabled}
       contentStyle={customContentStyle}
       mode={'contained'}
       onPress={onPress}
       style={customContainerStyle}
       theme={getTheme(type)}
-      icon={(props) => {
-        return <Image source={iconSource} style={{width: props.size, height: props.size}} tintColor={props.color}/>
-      }}>
+      icon={iconSource && ((props) => {
+        return <Image source={iconSource} style={{width: props.size, height: props.size}} tintColor={iconColor}/>
+      })}>
       <Text style={{fontWeight: 'bold'}}>{title}</Text>
     </PaperButton>
   )

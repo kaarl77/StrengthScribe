@@ -1,4 +1,4 @@
-import {View} from "react-native";
+import {StyleSheet, View} from "react-native";
 import Spacer from "../components/Spacer/Spacer";
 import {Spacings} from "../constants/Spacings";
 import {Searchbar} from "react-native-paper";
@@ -10,6 +10,7 @@ import {AsyncStorageKeys} from "../constants/AsyncStorageKeys";
 import {addExerciseToWorkout, getExercises} from "../services/store";
 import {filterExercises} from "./home/Exercises";
 import Button from "../components/Button/Button";
+import TextInput from "../components/TextInput/TextInput";
 
 export default function AddExerciseToWorkout() {
   const props = useLocalSearchParams();
@@ -38,13 +39,13 @@ export default function AddExerciseToWorkout() {
   }, [userId]);
 
   return (
-    <View>
+    <View style={styles.container}>
       <Spacer height={Spacings["3x"]}/>
 
-      <Searchbar
+      <TextInput
         value={searchBarQuery}
-        placeholder={'Search for exercises...'}
-        style={{marginHorizontal: Spacings["2x"]}}
+        label={'Search for exercises...'}
+        // style={{marginHorizontal: Spacings["2x"]}}
         onChangeText={setSearchBarQuery}
       />
 
@@ -71,3 +72,9 @@ export default function AddExerciseToWorkout() {
       </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: Spacings["2x"]
+  }
+})

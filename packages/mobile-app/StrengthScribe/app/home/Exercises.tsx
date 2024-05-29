@@ -10,6 +10,7 @@ import {Searchbar} from "react-native-paper";
 import {ExerciseDTO, ExercisesDTO, RecentStatsDTO} from "../../services/store.types";
 import Button from "../../components/Button/Button";
 import {useRouter, useLocalSearchParams, useFocusEffect} from "expo-router";
+import TextInput from "../../components/TextInput/TextInput";
 
 export default function Exercises() {
 
@@ -57,7 +58,7 @@ export default function Exercises() {
       <Text style={{...Typography['6x'], fontWeight: 'bold'}}>Exercises</Text>
 
       <Spacer height={Spacings['1x']}/>
-      <Searchbar value={searchBarQuery} onChangeText={setSearchBarQuery} placeholder={'Search exercises...'}/>
+      <TextInput value={searchBarQuery} onChangeText={setSearchBarQuery} label={'Search exercises...'}/>
       <Spacer height={Spacings['3x']}/>
       {searchBarQuery.length < 3 && (
         <View style={{alignItems: "center"}}>

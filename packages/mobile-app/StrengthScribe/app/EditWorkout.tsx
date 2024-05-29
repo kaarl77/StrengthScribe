@@ -3,7 +3,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import {Spacings} from "../constants/Spacings";
 import Spacer from "../components/Spacer/Spacer";
 import {Typography} from "../constants/Typography";
-import {useLocalSearchParams, useRouter} from "expo-router";
+import {useFocusEffect, useLocalSearchParams, useRouter} from "expo-router";
 import {WorkoutDTO} from "../services/store.types";
 import {deleteExerciseFromWorkout, getWorkout} from "../services/store";
 import Button from "../components/Button/Button";
@@ -19,11 +19,17 @@ export default function EditWorkout() {
 
   const router = useRouter()
 
+  useFocusEffect(() => {
+    getWorkout(workoutId).then((response) => {
+      setWorkout(response.data)
+    })
+  });
+
   useEffect(() => {
     getWorkout(workoutId).then((response) => {
       setWorkout(response.data)
     })
-  }, [workoutId, params, shouldRefresh]);
+  }, [workoutId, shouldRefresh]);
 
   return (
     <ScrollView style={{paddingHorizontal: Spacings["2x"]}}>

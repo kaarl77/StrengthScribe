@@ -1,7 +1,7 @@
 import {ScrollView, StyleSheet, Text} from "react-native";
 import {Spacings} from "../../constants/Spacings";
 import Spacer from "../../components/Spacer/Spacer";
-import {useEffect, useState} from "react";
+import {Fragment, useEffect, useState} from "react";
 import {WorkoutsDTO} from "../../services/store.types";
 import {getItem} from "../../services/async-storage";
 import {AsyncStorageKeys} from "../../constants/AsyncStorageKeys";
@@ -29,7 +29,7 @@ export default function Index() {
       <Spacer height={Spacings["3x"]}/>
       {workouts?.map((workout, index)=>{
         return (
-          <>
+          <Fragment key={index}>
             <Button
               onPress={()=>{
                 router.navigate({pathname: '../StartWorkout/LogWorkout', params:{workoutId: workout.id, workoutName: workout.name}})
@@ -38,10 +38,9 @@ export default function Index() {
               type={"tertiary"}
               textAlign={'left'}
               iconSource={arrowRightSvg}
-              key={index}
             />
             <Spacer height={Spacings["1x"]}/>
-          </>
+          </Fragment>
         )
       })}
     </ScrollView>

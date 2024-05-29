@@ -47,7 +47,7 @@ export default function Workouts() {
       <Text style={{...Typography['6x'], fontWeight: 'bold'}}>Workouts</Text>
 
       <Spacer height={Spacings['1x']}/>
-      <TextInput value={searchBarQuery} onChangeText={setSearchBarQuery} label={'Search exercises...'}/>
+      <TextInput value={searchBarQuery} onChangeText={setSearchBarQuery} label={'Search workouts...'}/>
       <Spacer height={Spacings['3x']}/>
       {searchBarQuery.length < 3 && (
         <View style={{alignItems: "center"}}>

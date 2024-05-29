@@ -1,10 +1,7 @@
-import { Text, View } from 'react-native'
-import { StatusBar } from 'expo-status-bar'
+import { Redirect } from 'expo-router'
 
-export default function Index() {
-  return (
-    <View>
-      <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
-  )
+//todo in the future implement checker if user is logged in or not and redirect appropriately
+function Index() {
+  return <Redirect href='/LoginPage' />
 }
+export default Index
